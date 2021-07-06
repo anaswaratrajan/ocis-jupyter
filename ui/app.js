@@ -1,5 +1,6 @@
 import 'regenerator-runtime/runtime'
 import App from './components/App.vue'
+import Preview from './components/Preview.vue'
 import store from './store'
 
 const appInfo = {
@@ -19,9 +20,9 @@ const appInfo = {
 const routes = [
   {
     name: 'ocis-jupyter',
-    path: '/',
+    path: '/preview/:filePath',
     components: {
-      app: App
+      app: Preview
     }
   }
 ]
