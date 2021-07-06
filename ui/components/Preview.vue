@@ -1,9 +1,14 @@
 <template>
-    <div class="uk-flex">
-      <div class="uk-container uk-width-1-2">
-        <h1>File preview</h1>
+    <div class="uk-flex uk-grid-divider oc-py-m">
+      <div class="uk-container uk-width-3-4">
+        <span v-html="this.ipynbHTML"></span>
       </div>
-      <div class="uk-container uk-width-1-2">
+      <div class="uk-container uk-width-1-4">
+        <h4>swan project details</h4>
+        <div>config_val_1: configDetails</div>
+        <div>config_val_2: configDetails</div>
+        <div>...</div>
+        <div>config_val_N: configDetails</div>
       </div>
     </div>
 </template>
@@ -14,17 +19,37 @@ export default {
   data: function () {
     return {
       loading: true,
+      filePath: '',
+      fileContent: ''
     }
   },
   computed: {
-    message () {
+    ipynbHTML () {
       return this.$store.getters['OCIS-JUPYTER/message']
     }
   },
-  methods: {
-    submitName (name) {
-      this.$store.dispatch('OCIS-JUPYTER/submitName', name)
-    },
+  created() {
+    this.filePath = this.$route.params.filePath
   },
+  methods: {
+    loadFileContent() {
+      this.$client.files
+        .getFileContents(this.filePath, { resolveWithResponseObject: true })
+        .then(resp => {
+          this.fileContent = resp
+          console.log(JSON.parse(this.fileContent))
+        })
+        .catch(error => {
+          this.error(error)
+        })
+      this.$store.dispatch('OCIS-JUPYTER/submitName', JSON.stringify(this.fileContent))
+    }
+  },
+  mounted: function() {
+    this.filePath = this.$route.params.filePath
+    this.loadFileContent()
+
+    console.log(this.ipynbHTML)
+  }
 }
 </script>

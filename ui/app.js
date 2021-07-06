@@ -7,7 +7,6 @@ const appInfo = {
   name: 'OCIS-JUPYTER',
   id: 'ocis-jupyter',
   icon: 'text',
-  isFileEditor: true,
   extensions: [
     {
       extension: 'ipynb',
