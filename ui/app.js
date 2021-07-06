@@ -5,9 +5,15 @@ import store from './store'
 const appInfo = {
   name: 'OCIS-JUPYTER',
   id: 'ocis-jupyter',
-  icon: 'info',
-  isFileEditor: false,
-  extensions: []
+  icon: 'text',
+  isFileEditor: true,
+  extensions: [
+    {
+      extension: 'ipynb',
+      newTab: true,
+      routeName: 'ocis-jupyter'
+    }
+  ]
 }
 
 const routes = [
@@ -22,7 +28,7 @@ const routes = [
 
 const navItems = [
   {
-    name: 'OCIS-JUPYTER',
+    name: 'ocis-jupyter',
     iconMaterial: appInfo.icon,
     route: {
       name: 'ocis-jupyter',
@@ -31,9 +37,11 @@ const navItems = [
   }
 ]
 
+
+
 export default {
   appInfo,
+  navItems,
   store,
-  routes,
-  navItems
+  routes
 }
