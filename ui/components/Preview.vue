@@ -4,7 +4,9 @@
         <span v-html="this.ipynbHTML"></span>
       </div>
       <div class="uk-container uk-width-1-4">
+        <oc-button href="https://jupyter.org/" appearance="filled" variation="primary" class="oc-mr-s oc-mb-s">Open in SWAN</oc-button>
         <h4>swan project details</h4>
+        
         <div>config_val_1: configDetails</div>
         <div>config_val_2: configDetails</div>
         <div>...</div>
