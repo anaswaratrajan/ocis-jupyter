@@ -1,28 +1,33 @@
 import 'regenerator-runtime/runtime'
-import App from './components/App.vue'
+import Preview from './components/Preview.vue'
 import store from './store'
 
 const appInfo = {
   name: 'OCIS-JUPYTER',
   id: 'ocis-jupyter',
-  icon: 'info',
-  isFileEditor: false,
-  extensions: []
+  icon: 'text',
+  extensions: [
+    {
+      extension: 'ipynb',
+      newTab: true,
+      routeName: 'ocis-jupyter'
+    }
+  ]
 }
 
 const routes = [
   {
     name: 'ocis-jupyter',
-    path: '/',
+    path: '/preview/:filePath',
     components: {
-      app: App
+      app: Preview
     }
   }
 ]
 
 const navItems = [
   {
-    name: 'OCIS-JUPYTER',
+    name: 'ocis-jupyter',
     iconMaterial: appInfo.icon,
     route: {
       name: 'ocis-jupyter',
@@ -31,9 +36,11 @@ const navItems = [
   }
 ]
 
+
+
 export default {
   appInfo,
+  navItems,
   store,
-  routes,
-  navItems
+  routes
 }
