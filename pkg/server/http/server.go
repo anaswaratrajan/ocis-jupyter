@@ -1,11 +1,11 @@
 package http
 
 import (
-	"github.com/go-chi/chi"
 	"github.com/anaswaratrajan/ocis-jupyter/pkg/assets"
 	"github.com/anaswaratrajan/ocis-jupyter/pkg/proto/v0"
 	svc "github.com/anaswaratrajan/ocis-jupyter/pkg/service/v0"
 	"github.com/anaswaratrajan/ocis-jupyter/pkg/version"
+	"github.com/go-chi/chi"
 	"github.com/owncloud/ocis/ocis-pkg/account"
 	"github.com/owncloud/ocis/ocis-pkg/middleware"
 	"github.com/owncloud/ocis/ocis-pkg/service/http"
@@ -66,7 +66,7 @@ func Server(opts ...Option) http.Service {
 		604800))
 
 	mux.Route(options.Config.HTTP.Root, func(r chi.Router) {
-		proto.RegisterHelloWeb(r, handle)
+		proto.RegisterJupyterNotebookSupportWeb(r, handle)
 	})
 
 	service.Handle(

@@ -24,7 +24,7 @@ func Server(opts ...Option) grpc.Service {
 	handler := svc.NewService()
 	handler = svc.NewInstrument(handler, options.Metrics)
 	handler = svc.NewLogging(handler, options.Logger)
-	if err := proto.RegisterHelloHandler(service.Server(), handler); err != nil {
+	if err := proto.RegisterJupyterNotebookSupportHandler(service.Server(), handler); err != nil {
 		options.Logger.Fatal().Err(err).Msg("could not register ocis-jupyter service handler")
 	}
 

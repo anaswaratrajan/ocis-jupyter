@@ -106,9 +106,5 @@
         }
       }
     }
-  },
-  "externalDocs": {
-    "description": "Developer Manual",
-    "url": "https://owncloud.github.io/extensions/ocis_hello/"
   }
 }

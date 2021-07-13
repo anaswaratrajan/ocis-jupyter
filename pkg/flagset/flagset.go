@@ -1,8 +1,8 @@
 package flagset
 
 import (
-	"github.com/micro/cli/v2"
 	"github.com/anaswaratrajan/ocis-jupyter/pkg/config"
+	"github.com/micro/cli/v2"
 )
 
 // RootWithConfig applies cfg to the root flagset
@@ -82,7 +82,7 @@ func ServerWithConfig(cfg *config.Config) []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:        "tracing-service",
-			Value:       "hello",
+			Value:       "ocis-jupyter",
 			Usage:       "Service name for tracing",
 			EnvVars:     []string{"OCIS_JUPYTER_TRACING_SERVICE"},
 			Destination: &cfg.Tracing.Service,
