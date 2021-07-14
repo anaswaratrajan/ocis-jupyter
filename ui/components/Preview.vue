@@ -20,14 +20,13 @@ export default {
   name: 'Preview',
   data: function () {
     return {
-      loading: true,
       filePath: '',
       fileContent: ''
     }
   },
   computed: {
     ipynbHTML () {
-      return this.$store.getters['OCIS-JUPYTER/message']
+      return this.$store.getters['OCIS-JUPYTER/nbcontent']
     }
   },
   created() {
@@ -44,7 +43,7 @@ export default {
         .catch(error => {
           this.error(error)
         })
-      this.$store.dispatch('OCIS-JUPYTER/submitName', JSON.stringify(this.fileContent))
+      this.$store.dispatch('OCIS-JUPYTER/generateHTML', JSON.stringify(this.fileContent))
     }
   },
   mounted: function() {
