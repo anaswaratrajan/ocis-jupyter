@@ -25,22 +25,8 @@ const routes = [
   }
 ]
 
-const navItems = [
-  {
-    name: 'ocis-jupyter',
-    iconMaterial: appInfo.icon,
-    route: {
-      name: 'ocis-jupyter',
-      path: `/${appInfo.id}/`
-    }
-  }
-]
-
-
-
 export default {
   appInfo,
-  navItems,
   store,
   routes
 }
