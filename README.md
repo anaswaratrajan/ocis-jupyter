@@ -2,10 +2,11 @@
 
 **This project is under heavy development, it's not in a working state yet!**
 
-
 ## Development
 
 Make sure you have a working Go environment, for further reference or a guide take a look at the [install instructions](http://golang.org/doc/install.html). This project requires Go >= v1.13. For the frontend it's also required to have [NodeJS](https://nodejs.org/en/download/package-manager/) and [Yarn](https://yarnpkg.com/lang/en/docs/install/) installed.
+
+> Follow these [instructions](docs/configuration-with-ocis.md) and configure ocis to run ocis-jupyter.  
 
 ```console
 # clone and cd into ocis-jupyter

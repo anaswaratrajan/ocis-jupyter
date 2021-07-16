@@ -9,7 +9,7 @@ import (
 )
 
 // NewLogging returns a service that logs messages.
-func NewLogging(next v0proto.HelloHandler, logger log.Logger) v0proto.HelloHandler {
+func NewLogging(next v0proto.JupyterNotebookSupportHandler, logger log.Logger) v0proto.JupyterNotebookSupportHandler {
 	return logging{
 		next:   next,
 		logger: logger,
@@ -17,17 +17,17 @@ func NewLogging(next v0proto.HelloHandler, logger log.Logger) v0proto.HelloHandl
 }
 
 type logging struct {
-	next   v0proto.HelloHandler
+	next   v0proto.JupyterNotebookSupportHandler
 	logger log.Logger
 }
 
 // Greet implements the HelloHandler interface.
-func (l logging) Greet(ctx context.Context, req *v0proto.GreetRequest, rsp *v0proto.GreetResponse) error {
+func (l logging) GenerateHTML(ctx context.Context, req *v0proto.JupyterNotebookJSON, rsp *v0proto.JupyterNotebookHTML) error {
 	start := time.Now()
-	err := l.next.Greet(ctx, req, rsp)
+	err := l.next.GenerateHTML(ctx, req, rsp)
 
 	logger := l.logger.With().
-		Str("method", "Hello.Greet").
+		Str("method", "JupyterNotebookSupport.GenerateHTML").
 		Dur("duration", time.Since(start)).
 		Logger()
 

@@ -7,30 +7,13 @@ geekdocEditPath: edit/master/docs
 geekdocFilePath: configuration-with-ocis.md
 ---
 
-### Configuring ocis-hello with ocis
+### Configuring ocis-jupyter with ocis
 We will need various services to run ocis
-
-#### Running a ldap server in docker container
-We will use the ldap server as users provider for ocis.
-```
-docker run --hostname ldap.my-company.com \
-    -e LDAP_TLS_VERIFY_CLIENT=never \
-    -e LDAP_DOMAIN=owncloud.com \
-    -e LDAP_ORGANISATION=ownCloud \
-    -e LDAP_ADMIN_PASSWORD=admin \
-    --name docker-slapd \
-    -p 127.0.0.1:389:389 \
-    -p 636:636 -d osixia/openldap
-```
-#### Running a redis server in a docker container
-Redis will be used by ocis for various caching purposes.
-```
-docker run -e REDIS_DATABASES=1 -p 6379:6379 -d webhippie/redis:latest
-
-```
 #### Running ocis
-In order to run this extension we will need to run ocis first. For that clone and build the ocis single binary from the github repo `https://github.com/owncloud/ocis`.
-After that we will need to create a config file for phoenix so that we can load the hello app in the frontend. Create a file `phoenix-config.json` with the following contents.
+In order to run this extension we will need to configure ocis first. For that clone and build the ocis single binary from the github repo `https://github.com/owncloud/ocis`. 
+
+Update the pheonix config file `web-config.json` with the following contents. We're registering the client of `ocis-jupyter` extension to pheonix. 
+
 ```json
 {
     "server": "https://localhost:9200",
@@ -52,62 +35,52 @@ After that we will need to create a config file for phoenix so that we can load 
     ], 
     "external_apps": [
         {
-            "id": "hello",
-            "path": "http://localhost:9105/hello.js",
-            "config": {
-                "url": "http://localhost:9105"
-            }
+            "id": "ocis-jupyter",
+            "path": "/ocis-jupyter.js"
         }
     ]   
 }
-```
-Here we can add the url for the js file from where the hello app will be loaded.
 
-After that we will need a configuration file for ocis where we can specify the path for the hello app in the backend. For this you can use the existing `proxy-example.json` file from the [ocis-proxy](https://github.com/owncloud/ocis-proxy/blob/master/config/proxy-example.json) repo. Just add an extra endpoint at the end for the hello app.
+```
+Here we can add the url for the js file from where the ocis-jupyter app will be loaded.
+
+After that we will need a configuration file for ocis where we can specify the path for the ocis-jupyter app in the backend. For this you can use the existing `proxy-example.json` file from the [ocis-proxy](https://github.com/owncloud/ocis-proxy/blob/master/config/proxy-example.json) repo. Just add these two endpoints at the end for the ocis-jupyter app. Now ocis-proxy knows where to route the requests when the client hits these endpoints. 
 ```json
         {
-          "endpoint": "/api/v0/greet",
+          "endpoint": "/api/v0/convert",
           "backend": "http://localhost:9105"
-        }
+        },
+        {
+          "endpoint": "/ocis-jupyter.js",
+          "backend": "http://localhost:9105"
+        },
 ```
 
-With all this in place we can finally start ocis. But first we will need to set some configuration variables.
+With all this in place we can finally start ocis. 
+
+Start ocis-server like so declaring the path to web-config file path explicitly
+
 ```
-export REVA_USERS_DRIVER=ldap
-export REVA_LDAP_HOSTNAME=localhost
-export REVA_LDAP_PORT=636
-export REVA_LDAP_BASE_DN='dc=owncloud,dc=com'
-export REVA_LDAP_USERFILTER='(&(objectclass=posixAccount)(cn=%s))'
-export REVA_LDAP_GROUPFILTER='(&(objectclass=posixGroup)(cn=%s))'
-export REVA_LDAP_BIND_DN='cn=admin,dc=owncloud,dc=com'
-export REVA_LDAP_BIND_PASSWORD=admin
-export REVA_LDAP_SCHEMA_UID=uid
-export REVA_LDAP_SCHEMA_MAIL=mail
-export REVA_LDAP_SCHEMA_DISPLAYNAME=displayName
-export REVA_LDAP_SCHEMA_CN=cn
-export LDAP_URI=ldap://localhost
-export LDAP_BINDDN='cn=admin,dc=owncloud,dc=com'
-export LDAP_BINDPW=admin
-export LDAP_BASEDN='dc=owncloud,dc=com'
+WEB_UI_CONFIG=/../ocis/web/config/web-config.json ./bin/ocis server
 ```
 
-In addition to all these we will also need to set the config files we just modified. For that set these variables with the path to the config files.
-```
-export PHOENIX_WEB_CONFIG=<path to phoenix config file>
-export OCIS_CONFIG_FILE=<path to ocis proxy config file>
-```
-And finally start the ocis server
-```
-bin/ocis server
-```
+Then kill ocis-proxy service and start the proxy seperately by declaring proxy-config file path. 
 
-After this we will need to start the ocis-hello service.
-For that just build ocis-hello binary.
 ```
-cd ocis-hello 
-make
+./bin/ocis kill proxy
+
+PROXY_CONFIG_FILE=/../ocis/proxy/config/proxy-example.json ./bin/proxy server
+
+``` 
+
+After this we will need to start the ocis-jupyter service.
+For that just build ocis-jupyter binary.
+
+```
+cd ocis-jupyter 
+make generate build
 ```
 And Run the service
 ```
-bin/ocis-hello server
+bin/ocis-jupyter server
 ```

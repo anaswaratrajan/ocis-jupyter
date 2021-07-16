@@ -172,29 +172,29 @@ $(GOPATH)/bin/protoc-gen-microweb:
 $(GOPATH)/bin/protoc-gen-swagger:
 	GO111MODULE=off go get -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-openapiv2
 
-pkg/proto/v0/hello.pb.go: pkg/proto/v0/hello.proto
+pkg/proto/v0/ocis-jupyter.pb.go: pkg/proto/v0/ocis-jupyter.proto
 	protoc \
 		-I=third_party/ \
 		-I=pkg/proto/v0/ \
-		--go_out=. hello.proto
+		--go_out=. ocis-jupyter.proto
 
-pkg/proto/v0/hello.pb.micro.go: pkg/proto/v0/hello.proto
+pkg/proto/v0/ocis-jupyter.pb.micro.go: pkg/proto/v0/ocis-jupyter.proto
 	protoc \
 		-I=third_party/ \
 		-I=pkg/proto/v0/ \
-		--micro_out=. hello.proto
+		--micro_out=. ocis-jupyter.proto
 
-pkg/proto/v0/hello.pb.web.go: pkg/proto/v0/hello.proto
+pkg/proto/v0/ocis-jupyter.pb.web.go: pkg/proto/v0/ocis-jupyter.proto
 	protoc \
 		-I=third_party/ \
 		-I=pkg/proto/v0/ \
-		--microweb_out=. hello.proto
+		--microweb_out=. ocis-jupyter.proto
 
-pkg/proto/v0/hello.swagger.json: pkg/proto/v0/hello.proto
+pkg/proto/v0/ocis-jupyter.swagger.json: pkg/proto/v0/ocis-jupyter.proto
 	protoc \
 		-I=third_party/ \
 		-I=pkg/proto/v0/ \
-		--openapiv2_out=logtostderr=true:pkg/proto/v0 hello.proto
+		--openapiv2_out=logtostderr=true:pkg/proto/v0 ocis-jupyter.proto
 
 .PHONY: protobuf
-protobuf:  $(GOPATH)/bin/protoc-gen-go $(GOPATH)/bin/protoc-gen-micro $(GOPATH)/bin/protoc-gen-microweb $(GOPATH)/bin/protoc-gen-swagger pkg/proto/v0/hello.pb.go pkg/proto/v0/hello.pb.micro.go pkg/proto/v0/hello.pb.web.go pkg/proto/v0/hello.swagger.json
+protobuf:  $(GOPATH)/bin/protoc-gen-go $(GOPATH)/bin/protoc-gen-micro $(GOPATH)/bin/protoc-gen-microweb $(GOPATH)/bin/protoc-gen-swagger pkg/proto/v0/ocis-jupyter.pb.go pkg/proto/v0/ocis-jupyter.pb.micro.go pkg/proto/v0/ocis-jupyter.pb.web.go pkg/proto/v0/ocis-jupyter.swagger.json

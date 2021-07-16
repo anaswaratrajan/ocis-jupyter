@@ -8,24 +8,24 @@ import (
 )
 
 // NewTracing returns a service that instruments traces.
-func NewTracing(next v0proto.HelloHandler) v0proto.HelloHandler {
+func NewTracing(next v0proto.JupyterNotebookSupportHandler) v0proto.JupyterNotebookSupportHandler {
 	return tracing{
 		next: next,
 	}
 }
 
 type tracing struct {
-	next v0proto.HelloHandler
+	next v0proto.JupyterNotebookSupportHandler
 }
 
 // Greet implements the HelloHandler interface.
-func (t tracing) Greet(ctx context.Context, req *v0proto.GreetRequest, rsp *v0proto.GreetResponse) error {
-	ctx, span := trace.StartSpan(ctx, "Hello.Greet")
+func (t tracing) GenerateHTML(ctx context.Context, req *v0proto.JupyterNotebookJSON, rsp *v0proto.JupyterNotebookHTML) error {
+	ctx, span := trace.StartSpan(ctx, "JupyterNotebookSupport.GenerateHTML")
 	defer span.End()
 
 	span.Annotate([]trace.Attribute{
-		trace.StringAttribute("name", req.Name),
-	}, "Execute Hello.Greet handler")
+		trace.StringAttribute("name", req.JSONString),
+	}, "Execute JupyterNotebookSupport.GenerateHTML handler")
 
-	return t.next.Greet(ctx, req, rsp)
+	return t.next.GenerateHTML(ctx, req, rsp)
 }

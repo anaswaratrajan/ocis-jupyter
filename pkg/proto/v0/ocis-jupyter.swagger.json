@@ -1,21 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Hello",
-    "version": "1.0",
-    "contact": {
-      "name": "ownCloud GmbH",
-      "url": "https://github.com/owncloud/ocis-hello",
-      "email": "support@owncloud.com"
-    },
-    "license": {
-      "name": "Apache-2.0",
-      "url": "https://github.com/owncloud/ocis-hello/blob/master/LICENSE"
-    }
+    "title": "JupyterNotebookSupport",
+    "version": "1.0"
   },
   "tags": [
     {
-      "name": "Hello"
+      "name": "JupyterNotebookSupport"
     }
   ],
   "schemes": [
@@ -29,14 +20,14 @@
     "application/json"
   ],
   "paths": {
-    "/api/v0/greet": {
+    "/api/v0/convert": {
       "post": {
-        "operationId": "Hello_Greet",
+        "operationId": "JupyterNotebookSupport_GenerateHTML",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoGreetResponse"
+              "$ref": "#/definitions/protoJupyterNotebookHTML"
             }
           },
           "default": {
@@ -52,32 +43,32 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoGreetRequest"
+              "$ref": "#/definitions/protoJupyterNotebookJSON"
             }
           }
         ],
         "tags": [
-          "Hello"
+          "JupyterNotebookSupport"
         ]
       }
     }
   },
   "definitions": {
-    "protoGreetRequest": {
+    "protoJupyterNotebookHTML": {
       "type": "object",
       "properties": {
-        "name": {
+        "HTMLString": {
+          "type": "string"
+        },
+        "err": {
           "type": "string"
         }
       }
     },
-    "protoGreetResponse": {
+    "protoJupyterNotebookJSON": {
       "type": "object",
       "properties": {
-        "message": {
-          "type": "string"
-        },
-        "err": {
+        "JSONString": {
           "type": "string"
         }
       }
@@ -115,9 +106,5 @@
         }
       }
     }
-  },
-  "externalDocs": {
-    "description": "Developer Manual",
-    "url": "https://owncloud.github.io/extensions/ocis_hello/"
   }
 }

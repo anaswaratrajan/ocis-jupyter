@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "pkg/proto/v0;proto";
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+		title: "JupyterNotebookSupport";
+		version: "1.0";
+	};
+	schemes: HTTP;
+	schemes: HTTPS;
+	consumes: "application/json";
+	produces: "application/json";
+};
+
+service JupyterNotebookSupport {
+	rpc GenerateHTML(JupyterNotebookJSON) returns (JupyterNotebookHTML) {
+		option (google.api.http) = {
+			post: "/api/v0/convert"
+			body: "*"
+		};
+	}
+}
+
+message JupyterNotebookJSON {
+	string JSONString = 1;
+}
+
+message JupyterNotebookHTML {
+	string HTMLString = 1;
+	string err = 2;
+}

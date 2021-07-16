@@ -1,15 +1,15 @@
 // eslint-disable-next-line camelcase
-import { Hello_Greet } from './client/ocis-jupyter'
+import { Generate_HTML } from './client/ocis-jupyter'
 import axios from 'axios'
 
 const state = {
   config: null,
-  message: ''
+  nbcontent: ''
 }
 
 const getters = {
   config: state => state.config,
-  message: state => state.message,
+  nbcontent: state => state.nbcontent,
   getServerForJsClient: (state, getters, rootState, rootGetters) => rootGetters.configuration.server.replace(/\/$/, '')
 }
 
@@ -19,17 +19,17 @@ const actions = {
     commit('LOAD_CONFIG', config)
   },
 
-  submitName ({ commit, dispatch, getters, rootGetters }, value) {
+  generateHTML ({ commit, dispatch, getters, rootGetters }, value) {
     injectAuthToken(rootGetters)
-    Hello_Greet({
+    Generate_HTML({
       $domain: getters.getServerForJsClient,
-      body: { name: value }
+      body: { JSONString: value }
     })
       .then(response => {
         console.log(response)
         
         if (response.status === 200 || response.status === 201) {
-          commit('SET_MESSAGE', response.data.message)
+          commit('SET_NBCONTENT', response.data.HTMLString)
         } else {
           dispatch('showMessage', {
             title: 'Response failed',
@@ -51,8 +51,8 @@ const actions = {
 }
 
 const mutations = {
-  SET_MESSAGE (state, payload) {
-    state.message = payload
+  SET_NBCONTENT (state, payload) {
+    state.nbcontent = payload
   },
 
   LOAD_CONFIG (state, config) {
